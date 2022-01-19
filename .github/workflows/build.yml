@@ -13,7 +13,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ macos-latest, ubuntu-latest, windows-latest ]
+                os: [ windows-latest ]
         steps:
             -   uses: actions/checkout@v2
             -   name: Set up JDK 15
@@ -43,18 +43,11 @@ jobs:
                     architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
             - run: python patch.py
             -   name: Build with Maven
-                run: mvn -ntp verify -DskipITs -DskipSign -B -Drevision=0 -Pinstaller
-            - name: release
-              uses: "marvinpinto/action-automatic-releases@latest"
+                run: mvn -ntp verify -DskipITs -DskipSign -B -Drevision=0
+            - name: Archive Release
+              uses: thedoctor0/zip-release@master
               with:
-                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "latest"
-                  prerelease: true
-                  title: "Development Build"
-                  files: |
-                    LICENSE.txt
-                    windows/target/release/*.exe
-                    windows/target/release/*.msi
-                    osx/target/release/*.zip
-                    osx/target/release/*.pkg
-                    cli/osx/target/release/*(pkg|tar.gz|exe|msi|deb|rpm)
+                type: 'zip'
+                filename: 'release.zip'
+                path: 'windows/target/'
+                exclusions: '*.git* /*node_modules/* .editorconfig'
