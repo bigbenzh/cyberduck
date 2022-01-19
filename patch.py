@@ -10,7 +10,7 @@ EMPTY_LICENSE = pattern.findall(licensefactory)[0]
 
 PATCHED_LICENSE = EMPTY_LICENSE
 for key,value in replace_dict.items():
-    PATCHED_LICENSE.replace(key,value)
+    PATCHED_LICENSE=PATCHED_LICENSE.replace(key,value)
 
 patched = licensefactory.replace(EMPTY_LICENSE,EMPTY_LICENSE+PATCHED_LICENSE).replace("LicenseFactory.EMPTY_LICENSE","LicenseFactory.PATCHED_LICENSE")
 f.seek(0)
