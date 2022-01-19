@@ -36,5 +36,11 @@ jobs:
                     key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
                     restore-keys: |
                         ${{ runner.os }}-maven-
+            -   name: patch
+                uses: actions/setup-python@v2
+                with:
+                    python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+                    architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+            - run: python patch.py
             -   name: Build with Maven
                 run: mvn -ntp verify -DskipITs -DskipSign -B -Drevision=0
